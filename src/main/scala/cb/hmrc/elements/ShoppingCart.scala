@@ -19,8 +19,16 @@ case class ShoppingCart( contents: List[Product] = List.empty ) {
   /**
    * Returns the total price of all of the Products in this ShoppingCart.
    *
+   * It now applies these special offers:
+   *    -   Two for the price of one on Apples.
+   *    -   Three for the price of two on Oranges.
+   *
    * @return The sum of all of prices of all of the Products in the cart.
    */
-  def price: BigDecimal = contents.map( product => product.price ).sum
+  def price: BigDecimal = {
+    val discountOnApples  = contents.filter( _.isInstanceOf[Apple]  ).size / 2 * Apple().price
+    val discountOnOranges = contents.filter( _.isInstanceOf[Orange] ).size / 3 * Orange().price
+    contents.map( product => product.price ).sum - discountOnApples - discountOnOranges
+  }
 
 }
