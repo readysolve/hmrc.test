@@ -8,6 +8,53 @@ import org.scalatest._
  */
 class ShoppingCartSpec extends FlatSpec with Matchers {
 
+  "The discountProductOnQuantity method" should
+    "return the right discount for 3 for price of 2" in {
+      val products: List[Product] = List.fill( 3 )( Banana() )
+      ShoppingCart().discountProductOnQuantity( products, 3 ) should be( Banana().price )
+  }
+
+  "The price of a Banana" should "be calculated correctly" in {
+    val cart = ShoppingCart().add( Banana() )
+    cart.price should be ( BigDecimal( "0.20" ) )
+  }
+
+  "A cart with two Bananas" should "give one banana for free" in {
+    val cart = ShoppingCart().add( Banana() ).add( Banana() )
+    cart.price should be ( BigDecimal( "0.20" ) )
+  }
+
+  "A cart with two Bananas and one Apple" should "give one banana for free" in {
+    val cart = ShoppingCart().add( Banana() ).add( Banana() ).add( Apple() )
+    val expectedPrice: BigDecimal = Apple().price + Banana().price
+    cart.price should be ( expectedPrice )
+  }
+
+  "A cart with two Apples and one Banana" should "give one banana for free" in {
+    val cart = ShoppingCart().add( Banana() ).add( Apple() ).add( Apple() )
+    val expectedPrice: BigDecimal = 2 * Apple().price
+    cart.price should be ( expectedPrice )
+  }
+
+  "The price of a Melon" should "be calculated correctly" in {
+    val cart = ShoppingCart().add( Melon() )
+    cart.price should be ( BigDecimal( "1.00" ) )
+  }
+
+  "The price of two Melons" should "be calculated correctly" in {
+    val cart = ShoppingCart().add( Melon() ).add( Melon() )
+    val expectedPrice: BigDecimal = 2 * Melon().price
+    cart.price should be ( expectedPrice )
+  }
+
+  "A cart with three Melons" should "be two for the price of one" in {
+    val cart = ShoppingCart().add( Melon() ).add( Melon() ).add( Melon() )
+    val expectedPrice: BigDecimal = 2 * Melon().price
+    cart.price should be ( expectedPrice )
+  }
+
+
+
   "A shopping cart's contents" should "be correct" in {
     val emptyCart = ShoppingCart()
     emptyCart.contents.isEmpty should be ( true )

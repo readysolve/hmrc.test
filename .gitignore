@@ -4,3 +4,8 @@
 /project/project/
 /project/target/
 /target/
+#
+# Ignore the Typesafe Activator files and the license file, if they are present.
+#
+/activator*
+/LICENSE
